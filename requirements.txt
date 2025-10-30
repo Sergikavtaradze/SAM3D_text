@@ -1,0 +1,39 @@
+# Numeric stack
+numpy==1.26.4
+scipy==1.11.4
+scikit-learn==1.6.1
+pillow==11.1.0
+tqdm==4.67.1
+requests==2.32.3
+typing_extensions==4.12.2
+packaging==24.2
+
+# PyTorch ecosystem  CUDA 12.4 wheels
+torch==2.6.0
+torchvision==0.21.0
+# Do NOT pin triton. Let torch bring a compatible one.
+
+# Vision and medical imaging
+opencv-python==4.11.0.86
+scikit-image==0.24.0
+nibabel==5.1.0
+SimpleITK==2.2.1
+MedPy==0.4.0
+monai==1.1.0
+
+# HF stack
+transformers==4.51.1
+accelerate==1.6.0
+huggingface-hub==0.30.2
+tokenizers==0.21.1
+safetensors==0.6.2
+peft==0.15.1
+einops==0.6.1
+
+# TimM and metrics
+timm==1.0.19
+torchmetrics==1.7.1
+
+# Segmentation projects
+segment_anything @ git+https://github.com/facebookresearch/segment-anything.git@dca509fe793f601edb92606367a655c15ac00fdf
+Surface-Distance-Based-Measures @ git+https://github.com/deepmind/surface-distance.git@ee651c80e11ab5fcc3d1b0c1c6e7bbc6fb4c987c
