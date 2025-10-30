@@ -1,0 +1,14 @@
+Starting preprocessing analysis
+This is the folder pattern: /cluster/project7/SAMed/datasets/endonasal_mri_batch2/mri_*
+
+1. Computing Intensity Range
+Masks - Intensity Range: (0.0, 12211.6103515625)
+
+2. Computing Global Mean and Standard Deviation
+Images - Global Mean: 123.61745421964683, Global Std: 246.33260633390296
+
+3. Extracting Voxel Spacing and Dimensions
+Images
+Minimum spacing (D, H, W): [0.48828125 0.48828125 0.5       ]
+Median spacing (D, H, W): [0.5 0.5 0.5]
+Maximum spacing (D, H, W): [0.5 0.5 1.5]

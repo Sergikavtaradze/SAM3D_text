@@ -1,0 +1,36 @@
+Starting preprocessing analysis
+This is the folder pattern: /cluster/project7/SAMed/datasets/endonasal_mri_batch2/mri_*
+Shape mismatch: Image shape (491, 399, 342), Mask shape (499, 399, 342)
+Resized mask to shape (491, 399, 342)
+Shape mismatch: Image shape (491, 399, 342), Mask shape (499, 399, 342)
+Resized mask to shape (491, 399, 342)
+Shape mismatch: Image shape (491, 419, 342), Mask shape (499, 419, 342)
+Resized mask to shape (491, 419, 342)
+Shape mismatch: Image shape (483, 391, 324), Mask shape (499, 391, 342)
+Resized mask to shape (483, 391, 324)
+Shape mismatch: Image shape (491, 419, 342), Mask shape (499, 419, 342)
+Resized mask to shape (491, 419, 342)
+Shape mismatch: Image shape (491, 419, 342), Mask shape (499, 419, 342)
+Resized mask to shape (491, 419, 342)
+Shape mismatch: Image shape (483, 391, 324), Mask shape (499, 391, 342)
+Resized mask to shape (483, 391, 324)
+
+1. Computing Intensity Range based on foreground pixels
+Intensity Range (0.5th, 99.5th percentiles): (70.94605690002442, 2317.3609033203084)
+
+2. Computing Global Mean and Standard Deviation based on foreground pixels
+Global Mean: 432.88325227536376, Global Std: 350.76435733219495
+
+3. Extracting Voxel Spacing and Dimensions
+Images
+Minimum spacing (D, H, W): [0.48828125 0.48828125 0.5       ]
+Median spacing (D, H, W): [0.5 0.5 0.5]
+Maximum spacing (D, H, W): [0.5 0.5 1.5]
+Minimum dimensions (D, H, W): [460 369 114]
+Maximum dimensions (D, H, W): [600 499 432]
+Masks
+Minimum spacing (D, H, W): [0.48828125 0.48828125 0.5       ]
+Median spacing (D, H, W): [0.5 0.5 0.5]
+Maximum spacing (D, H, W): [0.5 0.5 1.5]
+Minimum dimensions (D, H, W): [460 369 114]
+Maximum dimensions (D, H, W): [600 499 432]
