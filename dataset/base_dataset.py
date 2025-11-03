@@ -3,22 +3,17 @@ from typing import Any, Callable, Dict, Hashable, List, Mapping, Optional, Seque
 from monai.config import IndexSelection, KeysCollection, SequenceStr
 from monai.transforms import (
     Compose,
-    AddChanneld,
     RandCropByPosNegLabeld,
     CropForegroundd,
     SpatialPadd,
     ScaleIntensityRanged,
     RandShiftIntensityd,
     RandFlipd,
-    RandAffined,
     RandZoomd,
     RandRotated,
     RandRotate90d,
-    RandGaussianNoised,
-    RandGaussianSmoothd,
     NormalizeIntensityd,
     MapTransform,
-    RandScaleIntensityd,
     RandSpatialCropd,
     CenterSpatialCropd,
 )
@@ -201,8 +196,8 @@ class BaseVolumeDataset(Dataset):
                     .squeeze(0)
                     .numpy()
                 )
-        print(f"This is the image shape: {img.shape}")
-        print(f"This is the seg shape: {seg.shape}")
+        # print(f"This is the image shape: {img.shape}")
+        # print(f"This is the seg shape: {seg.shape}")
         # logger.info(f"This is the image shape: {img.shape}")
         # logger.info(f"This is the seg shape: {seg.shape}")
         # The transforms might return a list of dictionaries or a single dictionary
@@ -274,14 +269,6 @@ class BaseVolumeDataset(Dataset):
             else:
                 transforms.extend(
                     [
-                        # RandRotated(
-                        #     keys=["image", "label"],
-                        #     prob=0.3,
-                        #     range_x=30 / 180 * np.pi,
-                        #     range_y=30 / 180 * np.pi,
-                        #     range_z=30 / 180 * np.pi,
-                        #     keep_size=False,
-                        # ),
                         RandZoomd(
                             keys=["image", "label"],
                             prob=0.8,
@@ -312,31 +299,11 @@ class BaseVolumeDataset(Dataset):
                         roi_size=self.rand_crop_spatial_size,
                         random_size=False,
                     ),
-                    # CenterSpatialCropd(
-                    #     keys=["image", "label"],
-                    #     roi_size=self.rand_crop_spatial_size,
-                    # ),
+                    
                     RandFlipd(keys=["image", "label"], prob=0.5, spatial_axis=0),
                     RandFlipd(keys=["image", "label"], prob=0.5, spatial_axis=1),
                     RandFlipd(keys=["image", "label"], prob=0.5, spatial_axis=2),
                     RandRotate90d(keys=["image", "label"], prob=0.5, max_k=3),
-                    # RandScaleIntensityd(keys="image", factors=0.1, prob=0.2),
-                    # RandShiftIntensityd(
-                    #     keys=["image"],
-                    #     offsets=0.10,
-                    #     prob=0.2,
-                    # ),
-                    # RandGaussianNoised(keys=["image"], prob=0.1),
-                    # RandGaussianSmoothd(
-                    #     keys=["image"],
-                    #     prob=0.2,
-                    #     sigma_x=(0.5, 1),
-                    #     sigma_y=(0.5, 1),
-                    #     sigma_z=(0.5, 1),
-                    # ),
-                    # AddChanneld(keys=["image", "label"]),
-                    # RandShiftIntensityd(keys=["image"], offsets=10),
-                    # RandRotate90d(keys=["image", "label"], prob=0.5, spatial_axes=(0, 1)),]
                 ]
             )
         elif (not self.do_val_crop) and (self.split == "val"):
@@ -352,11 +319,6 @@ class BaseVolumeDataset(Dataset):
         elif  (self.do_val_crop)  and (self.split == "val"):
             transforms.extend(
                 [
-                    # CropForegroundd(
-                    #     keys=["image", "label"],
-                    #     source_key="image",
-                    #     select_fn=lambda x: x > self.intensity_range[0],
-                    # ),
                     SpatialPadd(
                         keys=["image", "label"],
                         spatial_size=[i for i in self.rand_crop_spatial_size],
@@ -374,11 +336,6 @@ class BaseVolumeDataset(Dataset):
                         roi_size=self.rand_crop_spatial_size,
                         random_size=False,
                     ),
-
-                    # CenterSpatialCropd(
-                    #     keys=["image", "label"],
-                    #     roi_size=[32 * (self.rand_crop_spatial_size[i] // 32) for i in range(3)]
-                    # ),
 
                     NormalizeIntensityd(
                         keys=["image"],
@@ -621,14 +578,6 @@ class MaskWiseVolumeDataset(Dataset):
             else:
                 transforms.extend(
                     [
-                        # RandRotated(
-                        #     keys=["image", "label"],
-                        #     prob=0.3,
-                        #     range_x=30 / 180 * np.pi,
-                        #     range_y=30 / 180 * np.pi,
-                        #     range_z=30 / 180 * np.pi,
-                        #     keep_size=False,
-                        # ),
                         RandZoomd(
                             keys=["image", "label"],
                             prob=0.8,
@@ -659,31 +608,11 @@ class MaskWiseVolumeDataset(Dataset):
                         roi_size=self.rand_crop_spatial_size,
                         random_size=False,
                     ),
-                    # CenterSpatialCropd(
-                    #     keys=["image", "label"],
-                    #     roi_size=self.rand_crop_spatial_size,
-                    # ),
+
                     RandFlipd(keys=["image", "label"], prob=0.5, spatial_axis=0),
                     RandFlipd(keys=["image", "label"], prob=0.5, spatial_axis=1),
                     RandFlipd(keys=["image", "label"], prob=0.5, spatial_axis=2),
                     RandRotate90d(keys=["image", "label"], prob=0.5, max_k=3),
-                    # RandScaleIntensityd(keys="image", factors=0.1, prob=0.2),
-                    # RandShiftIntensityd(
-                    #     keys=["image"],
-                    #     offsets=0.10,
-                    #     prob=0.2,
-                    # ),
-                    # RandGaussianNoised(keys=["image"], prob=0.1),
-                    # RandGaussianSmoothd(
-                    #     keys=["image"],
-                    #     prob=0.2,
-                    #     sigma_x=(0.5, 1),
-                    #     sigma_y=(0.5, 1),
-                    #     sigma_z=(0.5, 1),
-                    # ),
-                    # AddChanneld(keys=["image", "label"]),
-                    # RandShiftIntensityd(keys=["image"], offsets=10),
-                    # RandRotate90d(keys=["image", "label"], prob=0.5, spatial_axes=(0, 1)),]
                 ]
             )
         elif (not self.do_val_crop) and (self.split == "val"):
@@ -699,11 +628,6 @@ class MaskWiseVolumeDataset(Dataset):
         elif  (self.do_val_crop)  and (self.split == "val"):
             transforms.extend(
                 [
-                    # CropForegroundd(
-                    #     keys=["image", "label"],
-                    #     source_key="image",
-                    #     select_fn=lambda x: x > self.intensity_range[0],
-                    # ),
                     SpatialPadd(
                         keys=["image", "label"],
                         spatial_size=[i for i in self.rand_crop_spatial_size],
@@ -721,11 +645,6 @@ class MaskWiseVolumeDataset(Dataset):
                         roi_size=self.rand_crop_spatial_size,
                         random_size=False,
                     ),
-
-                    # CenterSpatialCropd(
-                    #     keys=["image", "label"],
-                    #     roi_size=[32 * (self.rand_crop_spatial_size[i] // 32) for i in range(3)]
-                    # ),
 
                     NormalizeIntensityd(
                         keys=["image"],
@@ -752,193 +671,3 @@ class MaskWiseVolumeDataset(Dataset):
         transforms = Compose(transforms)
 
         return transforms
-
-    # def visualize_masks(self, idx, pred_mask, output_dir="visualizations"):
-    #     """
-    #     Visualize the image with overlaid tumor and predicted masks and save to a folder.
-        
-    #     Args:
-    #         idx: Index of the dataset item to visualize
-    #         pred_mask: Predicted segmentation mask from the model (numpy array)
-    #         output_dir: Directory to save visualizations to
-    #     """
-    #     import matplotlib.pyplot as plt
-    #     import os
-    #     import nibabel as nib
-    #     import numpy as np
-        
-    #     # Create output directory if it doesn't exist
-    #     os.makedirs(output_dir, exist_ok=True)
-        
-    #     # Get the image and mask paths
-    #     img_rel_path = self.img_dict[idx]
-    #     img_path = os.path.join(self.data_dir, img_rel_path)
-        
-    #     # Extract patient ID from the file path for naming
-    #     patient_id = os.path.basename(img_rel_path).split('.')[0]
-        
-    #     mask_paths_rel = self.label_dict[idx]
-    #     if isinstance(mask_paths_rel, str):
-    #         mask_paths_rel = [mask_paths_rel]
-    #     mask_paths = [os.path.join(self.data_dir, mp) for mp in mask_paths_rel]
-        
-    #     # Load the volumes
-    #     img_vol = nib.load(img_path)
-    #     img = img_vol.get_fdata().astype(np.float32).transpose(self.spatial_index)
-        
-    #     tumor_vol = nib.load(mask_paths[0])
-    #     tumor = tumor_vol.get_fdata().astype(np.float32).transpose(self.spatial_index)
-        
-    #     # Load ICA mask but we won't display it (keeping for return value consistency)
-    #     ica = None
-    #     if len(mask_paths) > 1:
-    #         ica_vol = nib.load(mask_paths[1])
-    #         ica = ica_vol.get_fdata().astype(np.float32).transpose(self.spatial_index)
-    #     else:
-    #         ica = np.zeros_like(tumor)
-        
-    #     # Ensure pred_mask is in the same orientation and format
-    #     if pred_mask.shape != img.shape:
-    #         print(f"Warning: Predicted mask shape {pred_mask.shape} does not match image shape {img.shape}")
-    #         # Attempt to resize the prediction to match the image
-    #         try:
-    #             from scipy.ndimage import zoom
-    #             resize_factors = [img.shape[i] / pred_mask.shape[i] for i in range(3)]
-    #             pred_mask = zoom(pred_mask, resize_factors, order=0)  # order=0 for nearest neighbor
-    #             print(f"Resized prediction to {pred_mask.shape}")
-    #         except Exception as e:
-    #             print(f"Failed to resize prediction: {e}")
-    #             return img, tumor, ica, pred_mask
-        
-    #     # Replace NaNs with 0
-    #     img[np.isnan(img)] = 0
-    #     tumor[np.isnan(tumor)] = 0
-    #     pred_mask[np.isnan(pred_mask)] = 0
-        
-    #     # Find slice with maximum combined mask content (GT + prediction)
-    #     # Calculate overlap and combined area for each Z slice
-    #     overlap_z = np.sum(np.logical_and(tumor > 0, pred_mask > 0), axis=(1, 2))
-    #     combined_z = np.sum(np.logical_or(tumor > 0, pred_mask > 0), axis=(1, 2))
-        
-    #     # First try to find the slice with maximum overlap
-    #     if np.max(overlap_z) > 0:
-    #         best_z = np.argmax(overlap_z)
-    #     else:
-    #         # If no overlap, use the slice with maximum combined area
-    #         best_z = np.argmax(combined_z)
-        
-    #     # Find slices with maximum mask area for tumor and predicted mask
-    #     tumor_sum_z = np.sum(tumor, axis=(1, 2))
-    #     tumor_best_z = np.argmax(tumor_sum_z)
-        
-    #     pred_sum_z = np.sum(pred_mask, axis=(1, 2))
-    #     pred_best_z = np.argmax(pred_sum_z)
-        
-    #     # Create the figure with 3 subplots (showing only the best Z slice)
-    #     fig, axes = plt.subplots(2, 3, figsize=(18, 6))
-    
-    #     # 1. Image with ground truth tumor overlay
-    #     axes[0, 0].imshow(img[best_z, :, :], cmap='gray')
-    #     axes[0, 0].imshow(tumor[best_z, :, :], cmap='hot', alpha=0.5)
-    #     axes[0, 0].set_title(f'Ground Truth Mask - Axial (Z={best_z})')
-    #     axes[0, 0].axis('off')  # Turn off axis for each subplot individually
-
-    #     # 2. Image with predicted mask overlay
-    #     axes[0, 1].imshow(img[best_z, :, :], cmap='gray')
-    #     axes[0, 1].imshow(pred_mask[best_z, :, :], cmap='winter', alpha=0.5)
-    #     axes[0, 1].set_title(f'Predicted Mask - Axial (Z={best_z})')
-    #     axes[0, 1].axis('off')  # Turn off axis for each subplot individually
-        
-    #     # 3. Image with both GT and predicted mask
-    #     # Create a composite image where:
-    #     # - GT mask will be green
-    #     # - Predicted mask will be blue
-    #     # - Overlap will appear cyan (blue+green)
-    #     overlay_img = img[best_z, :, :]
-    #     # Normalize for better visualization
-    #     if overlay_img.max() > overlay_img.min():
-    #         overlay_img = (overlay_img - overlay_img.min()) / (overlay_img.max() - overlay_img.min())
-        
-    #     # Create RGB image
-    #     rgb_overlay = np.zeros((*overlay_img.shape, 3))
-    #     # Set grayscale background
-    #     rgb_overlay[:, :, 0] = overlay_img
-    #     rgb_overlay[:, :, 1] = overlay_img 
-    #     rgb_overlay[:, :, 2] = overlay_img
-        
-    #     # Add GT mask in green
-    #     rgb_overlay[:, :, 1] = np.where(tumor[best_z, :, :] > 0, 1.0, rgb_overlay[:, :, 1])
-        
-    #     # Add predicted mask in blue (not red)
-    #     rgb_overlay[:, :, 2] = np.where(pred_mask[best_z, :, :] > 0, 1.0, rgb_overlay[:, :, 2])
-        
-    #     axes[0, 2].imshow(rgb_overlay)
-    #     axes[0, 2].set_title(f'GT (green) & Pred (blue) - Axial (Z={best_z})')
-    #     axes[0, 2].axis('off')  # Turn off axis for each subplot individually
-
-    #     # 4. ground truth tumor mask
-    #     axes[1, 0].imshow(tumor[best_z, :, :], cmap='hot', alpha=0.5)
-    #     axes[1, 0].set_title(f'Ground Truth Mask - Axial (Z={best_z})')
-    #     axes[1, 0].axis('off')  # Turn off axis for each subplot individually
-    #     # 5. predicted mask
-    #     axes[1, 1].imshow(pred_mask[best_z, :, :], cmap='winter', alpha=0.5)
-    #     axes[1, 1].set_title(f'Predicted Mask - Axial (Z={best_z})')
-    #     axes[1, 1].axis('off')  # Turn off axis for each subplot individually
-
-    #     # 6. predicted mask with ground truth tumor mask overlay without image
-    #     axes[1, 2].imshow(pred_mask[best_z, :, :], cmap='winter', alpha=0.5)
-    #     axes[1, 2].imshow(tumor[best_z, :, :], cmap='hot', alpha=0.5)
-    #     axes[1, 2].set_title(f'Predicted Mask with GT Tumor Mask - Axial (Z={best_z})')
-    #     axes[1, 2].axis('off')  # Turn off axis for each subplot individually
-        
-        
-    #     plt.tight_layout()
-    #     fig_path = os.path.join(output_dir, f"{patient_id}_idx{idx}_comparison.png")
-    #     plt.savefig(fig_path, dpi=150)
-    #     plt.close()
-        
-    #     # Create a second figure showing the max slices for better visualization
-    #     fig2, axes2 = plt.subplots(2, 2, figsize=(12, 12))
-        
-    #     # Tumor maximum slice
-    #     axes2[0, 0].imshow(img[tumor_best_z, :, :], cmap='gray')
-    #     axes2[0, 0].set_title(f'Image - Axial (Tumor Max Z={tumor_best_z})')
-        
-    #     axes2[0, 1].imshow(img[tumor_best_z, :, :], cmap='gray')
-    #     axes2[0, 1].imshow(tumor[tumor_best_z, :, :], cmap='hot', alpha=0.5)
-    #     axes2[0, 1].set_title(f'Tumor Mask - Axial (Max Z={tumor_best_z})')
-        
-    #     # Predicted mask maximum slice
-    #     axes2[1, 0].imshow(img[pred_best_z, :, :], cmap='gray')
-    #     axes2[1, 0].set_title(f'Image - Axial (Pred Max Z={pred_best_z})')
-        
-    #     axes2[1, 1].imshow(img[pred_best_z, :, :], cmap='gray')
-    #     axes2[1, 1].imshow(pred_mask[pred_best_z, :, :], cmap='winter', alpha=0.5)  # Using blue colormap
-    #     axes2[1, 1].set_title(f'Pred Mask - Axial (Max Z={pred_best_z})')
-        
-    #     # Turn off axes for all subplots
-    #     for ax in axes2.flat:
-    #         ax.axis('off')
-        
-    #     plt.tight_layout()
-    #     fig2_path = os.path.join(output_dir, f"{patient_id}_idx{idx}_max_slices.png")
-    #     plt.savefig(fig2_path, dpi=150)
-    #     plt.close()
-        
-    #     # Save statistics to a text file
-    #     stats_path = os.path.join(output_dir, f"{patient_id}_idx{idx}_stats.txt")
-    #     with open(stats_path, 'w') as f:
-    #         f.write(f"Image shape: {img.shape}\n")
-    #         f.write(f"Tumor mask shape: {tumor.shape}\n")
-    #         f.write(f"Predicted mask shape: {pred_mask.shape}\n")
-    #         f.write(f"Tumor mask range: [{np.min(tumor)}, {np.max(tumor)}]\n")
-    #         f.write(f"Predicted mask range: [{np.min(pred_mask)}, {np.max(pred_mask)}]\n")
-    #         f.write(f"Tumor mask positive voxels: {np.sum(tumor > 0)}\n")
-    #         f.write(f"Predicted mask positive voxels: {np.sum(pred_mask > 0)}\n")
-    #         f.write(f"Overlap (intersection) voxels: {np.sum(np.logical_and(tumor > 0, pred_mask > 0))}\n")
-    #         f.write(f"Best Z slice: {best_z}\n")
-    #         f.write(f"Tumor best Z slice: {tumor_best_z}\n")
-    #         f.write(f"Prediction best Z slice: {pred_best_z}\n")
-        
-    #     print(f"Visualization saved to {output_dir} for patient {patient_id} (index {idx})")
-    #     return img, tumor, ica, pred_mask
