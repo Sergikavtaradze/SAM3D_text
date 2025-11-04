@@ -12,7 +12,7 @@ def load_endonasal_data(directory):
     tumor_mask_files = glob.glob(os.path.join(directory, "*_tumor_f.nii.gz"))
     carotid_mask_files = glob.glob(os.path.join(directory, "*_carotids_f.nii.gz"))
 
-    # Build prefix to file maps (no lambda or dict comprehesion)
+    # Build prefix to file maps (no lambda or dict comprehension)
     image_map = {}
     for f in image_files:
         prefix = os.path.basename(f).replace("_T1.nii.gz", "")
@@ -53,21 +53,17 @@ if __name__ == "__main__":
     rel_images = [os.path.relpath(img, DATA_DIR) for img in images]
     rel_tumor_masks = [os.path.relpath(msk, DATA_DIR) for msk in tumor_masks]
     rel_carotid_masks = [os.path.relpath(msk, DATA_DIR) for msk in carotid_masks]
-    splits = {
-        0: {
-            'test': {}
-        }
-    }
+    tumor_test = {}
+    ica_test = {}
     for idx, (img, tumor, carotid) in enumerate(zip(rel_images, rel_tumor_masks, rel_carotid_masks)):
-        splits[0]['test'][idx] = [img, tumor, carotid]
-    print(f"\nAll {len(rel_images)} cases saved as the 'test' set.")
+        tumor_test[idx] = [img, tumor]
+        ica_test[idx] = [img, carotid]
+    split_dict = {
+        'tumor': {0: {'test': tumor_test}},
+        'ica':   {0: {'test': ica_test}}
+    }
+    print(f"\nWrote {len(tumor_test)} test samples for tumor, {len(ica_test)} test samples for carotid (ica).")
     os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)
     with open(OUTPUT_PATH, 'wb') as f:
-        pickle.dump(splits, f)
-    print(f"\nTest-only split saved to: {OUTPUT_PATH}")
-    print("\nVerifying test set:")
-    for idx in list(splits[0]['test'].keys())[:5]:
-        print(f"Case {idx}:")
-        print(f"  Image:   {splits[0]['test'][idx][0]}")
-        print(f"  Tumor:   {splits[0]['test'][idx][1]}")
-        print(f"  Carotid: {splits[0]['test'][idx][2]}")
+        pickle.dump(split_dict, f)
+    print(f"Test-only split (old-style maskwise) saved to: {OUTPUT_PATH}")
