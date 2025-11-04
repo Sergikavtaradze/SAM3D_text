@@ -10,6 +10,8 @@ SAM3DText extends the 3DSAM-adapter to accept **natural language prompts** along
 * Introduces **text prompt encoders** using GPT-2 and LLaMA-3.2.
 * Fuses text and vision features via **cross-attention**.
 * Retains SAM-B’s frozen 3D encoder with lightweight adapters.
+* For a demo notebook to run the whole inference pipeline please access the following Google Colab Noteboook:
+  https://colab.research.google.com/drive/1U7V6vjE7Z8BzuMGuFIVYRFb1wjoH077u?usp=sharing
 
 ### Architecture Changes
 
