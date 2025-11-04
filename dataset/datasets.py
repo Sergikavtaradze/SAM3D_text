@@ -192,7 +192,7 @@ def load_data_volume_maskwise(
         mask_types = {}
         
         counter = 0
-
+        print(info)
         if split == "train":
             for idx in info['tumor'][0][split]:
                 image_paths[counter] = info['tumor'][0][split][idx][0]
