@@ -18,9 +18,9 @@ SAM3DText extends the 3DSAM-adapter to accept **natural language prompts** along
 | Component                | Original              | SAM3DText Modification                                                                 |
 | ------------------------ | --------------------- | -------------------------------------------------------------------------------------- |
 | `prompt_encoder.py`      | Point-only encoder    | Added `PromptEncoder_Text` and `PromptEncoder_Text_Llama` with GPT-2 and LLaMA support |
-| `train_mobarak.py`       | Point prompt training | Multi-class maskwise point training                                                    |
-| `train_mobarak_GPT.py`   | N/A                   | Text prompt training using GPT-2 encoder                                               |
-| `train_mobarak_LLAMA.py` | N/A                   | Text prompt training using LLaMA-3.2 encoder                                           |
+| `train.py`       | Point prompt training | Multi-class maskwise point training                                                    |
+| `train_GPT.py`   | N/A                   | Text prompt training using GPT-2 encoder                                               |
+| `train_LLAMA.py` | N/A                   | Text prompt training using LLaMA-3.2 encoder                                           |
 
 ---
 
@@ -55,10 +55,6 @@ SAM3DText extends the 3DSAM-adapter to accept **natural language prompts** along
 #### `train_LLAMA.py`
 
 * Same as GPT version, using `PromptEncoder_Text_Llama` and a chosen LLAMA checkpoint.
-
----
-
-## Results (Should I include a section on results?)
 
 ---
 
@@ -133,6 +129,7 @@ python test_GPT_maskwise.py --data maskwise_endonasal --snapshot_path /checkpoin
   year={2023}
 }
 
+!!!!!TO BE CHANGED BELOW!!!!!!
 @misc{Kavtaradze2025SAM3DText,
   title={SAM3DText: Text-Prompted Interactive Model for MRI Pituitary Tumor Segmentation},
   author={Kavtaradze, Sergi and Clarkson, Matt and Hoque, Mobarak I},
